@@ -136,20 +136,21 @@ const App = () => {
             disabled={currentStep > Steps.WAITING}
           />
           {currentStep >= Steps.DEPLOYING && (
-            <StatusBox
-              key="status"
-              currentStep={currentStep}
-              cancelled={cancelled}
-              transactionHash={transactionHash}
-              etherscanGetter={etherscanGetter}
-              contractAddress={contract && contract.address}
-              ownerAddress={data.ownerAddress}
-            />
+            <React.Fragment key="status">
+              <StatusBox
+                currentStep={currentStep}
+                cancelled={cancelled}
+                transactionHash={transactionHash}
+                etherscanGetter={etherscanGetter}
+                contractAddress={contract && contract.address}
+                ownerAddress={data.ownerAddress}
+              />
+              <div ref={lastRef} />
+            </React.Fragment>
           )}
         </PoseGroup>
       </header>
 
-      <div ref={lastRef} />
       <hr />
       <Footer />
     </div>
