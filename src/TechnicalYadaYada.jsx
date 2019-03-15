@@ -36,7 +36,7 @@ const TechnicalYadaYada = props => (
       <h3>Technical yadayada:</h3>
       <ul>
         <li>
-          This Dapp will deploy a ERC20 smart contract on ethereum blockchain
+          This Dapp will deploy an ERC20 smart contract on ethereum blockchain
           for you.
         </li>
         <li>
