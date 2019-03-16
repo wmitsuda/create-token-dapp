@@ -142,7 +142,7 @@ const App = () => {
                 cancelled={cancelled}
                 transactionHash={transactionHash}
                 etherscanGetter={etherscanGetter}
-                contractAddress={contract && contract.address}
+                contractAddress={contract && contract.options.address}
                 ownerAddress={data.ownerAddress}
               />
               <div ref={lastRef} />
