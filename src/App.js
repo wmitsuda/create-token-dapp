@@ -32,7 +32,9 @@ const getEtherscanURL = networkId => {
     getTxURL: transactionHash =>
       `https://${networkPrefix}etherscan.io/tx/${transactionHash}`,
     getAddressURL: address =>
-      `https://${networkPrefix}etherscan.io/address/${address}`
+      `https://${networkPrefix}etherscan.io/address/${address}`,
+    getTokenURL: address =>
+      `https://${networkPrefix}etherscan.io/token/${address}`
   };
 };
 

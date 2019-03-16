@@ -112,6 +112,19 @@ const StatusBox = ({
       </ExternalLink>
       ]
     </ProgressMessage>
+    <ProgressMessage visible={currentStep >= Steps.DEPLOYED}>
+      [
+      <ExternalLink
+        href={
+          contractAddress &&
+          etherscanGetter &&
+          etherscanGetter.getTokenURL(contractAddress)
+        }
+      >
+        INSPECT ON TOKEN TRACKER
+      </ExternalLink>
+      ]
+    </ProgressMessage>
     {!cancelled &&
       currentStep >= Steps.DEPLOYING &&
       currentStep < Steps.DEPLOYED && <StyledSpinner name="three-bounce" />}
