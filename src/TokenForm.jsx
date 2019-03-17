@@ -1,6 +1,7 @@
 import React from "react";
 import { AvForm, AvField } from "availity-reactstrap-validation";
 import styled from "styled-components";
+import Web3 from "web3";
 
 const StyledDiv = styled.div`
   border: 3px solid #ececec;
@@ -27,7 +28,9 @@ const CreateTokenButton = styled.button`
   margin: 1rem;
 `;
 
-const TokenForm = ({ onSubmit, disabled }) => {
+const validateAddress = async value => Web3.utils.isAddress(value);
+
+const TokenForm = ({ onSubmit, disabled, initialOwner }) => {
   const handleSubmit = (event, errors, values) => {
     if (errors.length === 0) {
       onSubmit(values);
@@ -81,6 +84,19 @@ const TokenForm = ({ onSubmit, disabled }) => {
             max: { value: 1000000000 },
             pattern: { value: "^[0-9]{1,10}$" }
           }}
+          disabled={disabled}
+        />
+        <AvField
+          name="initialOwner"
+          label="Initial owner"
+          placeholder="Enter the owner address"
+          type="text"
+          errorMessage="Enter a valid ETH address"
+          validate={{
+            required: { value: true },
+            async: validateAddress
+          }}
+          value={initialOwner}
           disabled={disabled}
         />
         <CreateTokenButton key="create" type="submit" disabled={disabled}>
