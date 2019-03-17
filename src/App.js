@@ -3,6 +3,7 @@ import logo from "./technology.jpg";
 import "./App.css";
 import Web3 from "web3";
 import StandardERC20Token from "./contracts/StandardERC20Token.json";
+import GithubCorner from "react-github-corner";
 import { PoseGroup } from "react-pose";
 import YadaBlock from "./YadaBlock";
 import Instructions from "./Instructions";
@@ -126,6 +127,7 @@ const App = () => {
 
   return (
     <div className="App">
+      <GithubCorner href="https://github.com/wmitsuda/create-token-dapp" />
       <header className="App-header">
         <h1>create-token-dapp</h1>
         <img src={logo} className="App-logo" alt="logo" />
