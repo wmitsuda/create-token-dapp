@@ -69,10 +69,11 @@ const TokenForm = ({ onSubmit, disabled }) => {
         />
         <AvField
           name="initialAmount"
-          label="Initial amount"
-          placeholder="Enter amount of initialy issued tokens"
+          label="Initial supply"
+          placeholder="Enter the supply in integer units"
+          helpMessage="E.g. 10"
           type="number"
-          errorMessage="Amount must be an integer number between 1 and 1000000"
+          errorMessage="Amount must be an integer number between 1 and 1 bi"
           validate={{
             number: { value: true },
             required: { value: true },

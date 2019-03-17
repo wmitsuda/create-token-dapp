@@ -50,7 +50,7 @@ const TechnicalYadaYada = props => (
           <strong>NOT</strong> use openzeppelin-eth (yet).
         </li>
         <li>
-          The source code can be seem{" "}
+          The contract source code can be seem{" "}
           <ExternalLink href="https://github.com/wmitsuda/erc20-token-contract">
             here
           </ExternalLink>

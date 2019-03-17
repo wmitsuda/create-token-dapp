@@ -19,7 +19,8 @@ const Instructions = () => (
   <StyledDiv>
     <ul>
       <li>Fill the information bellow</li>
-      <li>Submit and pay for the gas</li>
+      <li>Press "Create Token!" and pay for the gas</li>
+      <li>Wait for the contract to be created on the blockchain</li>
       <li>
         Profit!{" "}
         <span role="img" aria-label="unicorn">
