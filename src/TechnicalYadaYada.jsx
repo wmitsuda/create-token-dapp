@@ -16,6 +16,7 @@ const StyledDiv = styled(PosedDiv)`
   border-radius: 5px;
   margin: 20px;
   padding: 10px;
+  max-width: 800px;
 
   & > h3 {
     text-align: center;
@@ -42,8 +43,11 @@ const TechnicalYadaYada = props => (
         <li>
           The deployed ERC20 token contract is based on source code of
           openzeppelin-solidity 2.1.3, more precisely the ERC20 and the
-          ERC20Detailed contracts, with the total supply being minted on
-          contract constructor and assigned to the transaction sender.
+          ERC20Detailed contracts.
+        </li>
+        <li>
+          The total supply will be minted on contract constructor and assigned
+          to the transaction sender address.
         </li>
         <li>
           The contract is <strong>NOT</strong> upgradable, it does{" "}
