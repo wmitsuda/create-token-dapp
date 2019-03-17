@@ -77,8 +77,8 @@ const TokenForm = ({ onSubmit, disabled }) => {
             number: { value: true },
             required: { value: true },
             min: { value: 1 },
-            max: { value: 1000000 },
-            pattern: { value: "^[0-9]{1,7}$" }
+            max: { value: 1000000000 },
+            pattern: { value: "^[0-9]{1,10}$" }
           }}
           disabled={disabled}
         />
