@@ -65,11 +65,11 @@ const App = () => {
     }
 
     const _web3 = new Web3(Web3.givenProvider, null, web3Options);
-    setWeb3(_web3);
     const accounts = await _web3.eth.getAccounts();
     setDefaultInitialOwner(accounts[0]);
     const networkId = await _web3.eth.net.getId();
     setEtherscanGetter(getEtherscanURL(networkId));
+    setWeb3(_web3);
   };
 
   // Initialize web3 and get the user account
