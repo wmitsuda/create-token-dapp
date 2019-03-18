@@ -47,7 +47,7 @@ const TechnicalYadaYada = props => (
         </li>
         <li>
           The total supply will be minted on contract constructor and assigned
-          to the transaction sender address.
+          to the specified address (by default, the default account).
         </li>
         <li>
           The contract is <strong>NOT</strong> upgradable, it does{" "}
