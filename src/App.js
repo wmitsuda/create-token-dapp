@@ -47,7 +47,7 @@ const getEtherscanURL = networkId => {
 
 const App = () => {
   const [web3, setWeb3] = useState();
-  const [defaultInitialOwner, setDefaultInitialOwner] = useState();
+  const [defaultAccount, setDefaultAccount] = useState();
   const [etherscanGetter, setEtherscanGetter] = useState();
   const [currentStep, setCurrentStep] = useState(Steps.WAITING);
   const [cancelled, setCancelled] = useState(false);
@@ -66,28 +66,24 @@ const App = () => {
 
     const _web3 = new Web3(Web3.givenProvider, null, web3Options);
     const accounts = await _web3.eth.getAccounts();
-    setDefaultInitialOwner(accounts[0]);
+    setDefaultAccount(accounts[0]);
     const networkId = await _web3.eth.net.getId();
     setEtherscanGetter(getEtherscanURL(networkId));
     setWeb3(_web3);
   };
 
-  // Initialize web3 and get the user account
   const handleTokenCreation = async values => {
     setCurrentStep(Steps.DEPLOYING);
 
     const _data = {
-      name: values.tokenName,
-      symbol: values.tokenSymbol,
+      name: values.tokenName.trim(),
+      symbol: values.tokenSymbol.trim(),
       decimals: 18,
       initialSupply: values.initialAmount.toString() + "0".repeat(18),
       ownerAddress: values.initialOwner
     };
     setData(_data);
-    handleTokenDeployment(_data);
-  };
 
-  const handleTokenDeployment = async data => {
     const erc20 = new web3.eth.Contract(
       StandardERC20Token.abi,
       null,
@@ -99,14 +95,14 @@ const App = () => {
         .deploy({
           data: StandardERC20Token.bytecode,
           arguments: [
-            data.name,
-            data.symbol,
-            data.decimals,
-            data.ownerAddress,
-            data.initialSupply
+            _data.name,
+            _data.symbol,
+            _data.decimals,
+            _data.ownerAddress,
+            _data.initialSupply
           ]
         })
-        .send({ from: defaultInitialOwner })
+        .send({ from: defaultAccount })
         .on("transactionHash", transactionHash => {
           setTransactionHash(transactionHash);
           setCurrentStep(Steps.BROADCASTING);
@@ -140,7 +136,7 @@ const App = () => {
             key="form"
             onSubmit={handleTokenCreation}
             disabled={currentStep > Steps.WAITING}
-            initialOwner={defaultInitialOwner}
+            initialOwner={defaultAccount}
           />
         ) : (
           <StartButton key="begin" onClick={initializeWeb3}>

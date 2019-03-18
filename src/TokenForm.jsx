@@ -103,16 +103,16 @@ const TokenForm = ({ onSubmit, disabled, initialOwner }) => {
   const handleValidation = values => {
     let errors = {};
 
-    if (!values.tokenName) {
+    if (!values.tokenName || values.tokenName.trim() === "") {
       errors.tokenName = "Token name is required";
-    } else if (!/^[a-zA-Z0-9 ]{1,20}$/.test(values.tokenName)) {
+    } else if (!/^[a-zA-Z0-9 ]{1,20}$/.test(values.tokenName.trim())) {
       errors.tokenName =
         "Token name must contain between 1 and 20 letters, numbers or spaces";
     }
 
-    if (!values.tokenSymbol) {
+    if (!values.tokenSymbol || values.tokenSymbol.trim() === "") {
       errors.tokenSymbol = "Token symbol is required";
-    } else if (!/^[A-Z]{2,10}$/.test(values.tokenSymbol)) {
+    } else if (!/^[a-zA-Z]{2,10}$/.test(values.tokenSymbol.trim())) {
       errors.tokenSymbol = "Token symbol must contain between 2 and 10 letters";
     }
 
