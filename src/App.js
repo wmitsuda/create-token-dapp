@@ -58,15 +58,14 @@ const App = () => {
   const initializeWeb3 = async () => {
     try {
       // Ensure accounts are unlocked
-      await Web3.givenProvider.enable();
+      const accounts = await Web3.givenProvider.enable();
+      setDefaultAccount(accounts[0]);
     } catch (err) {
       // User didn't approve access for accounts
       console.log("User has cancelled account access permission");
     }
 
     const _web3 = new Web3(Web3.givenProvider, null, web3Options);
-    const accounts = await _web3.eth.getAccounts();
-    setDefaultAccount(accounts[0]);
     const networkId = await _web3.eth.net.getId();
     setEtherscanGetter(getEtherscanURL(networkId));
     setWeb3(_web3);
