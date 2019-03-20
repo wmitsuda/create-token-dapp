@@ -136,6 +136,7 @@ const App = () => {
             onSubmit={handleTokenCreation}
             disabled={currentStep > Steps.WAITING}
             initialOwner={defaultAccount}
+            web3={web3}
           />
         ) : (
           <StartButton key="begin" onClick={initializeWeb3}>

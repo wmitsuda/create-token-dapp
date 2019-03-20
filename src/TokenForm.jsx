@@ -1,7 +1,6 @@
 import React from "react";
 import { Formik, Form, Field } from "formik";
 import styled from "styled-components";
-import Web3 from "web3";
 import QrReader from "react-qr-reader";
 import { useToggle } from "./hooks";
 import { library } from "@fortawesome/fontawesome-svg-core";
@@ -80,11 +79,11 @@ const TokenField = ({
   </div>
 );
 
-const TokenForm = ({ onSubmit, disabled, initialOwner }) => {
+const TokenForm = ({ onSubmit, disabled, initialOwner, web3 }) => {
   const [isScanning, toggleScanning, setScanning] = useToggle(false);
 
   const onScan = setFieldValue => result => {
-    if (Web3.utils.isAddress(result)) {
+    if (web3.utils.isAddress(result)) {
       setFieldValue("initialOwner", result);
       setScanning(false);
     }
@@ -131,7 +130,7 @@ const TokenForm = ({ onSubmit, disabled, initialOwner }) => {
 
     if (!values.initialOwner) {
       errors.initialOwner = "Initial owner is required";
-    } else if (!Web3.utils.isAddress(values.initialOwner)) {
+    } else if (!web3.utils.isAddress(values.initialOwner)) {
       errors.initialOwner = "Enter a valid ETH address";
     }
 
