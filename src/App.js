@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import logo from "./technology.jpg";
 import "./App.css";
 import Web3 from "web3";
+import { Web3Context } from "./Web3Context";
 import StandardERC20Token from "./contracts/StandardERC20Token.json";
 import GithubCorner from "react-github-corner";
 import { PoseGroup } from "react-pose";
@@ -131,13 +132,14 @@ const App = () => {
         <YadaBlock key="yada" />
         <Instructions key="info" />
         {web3 ? (
-          <TokenForm
-            key="form"
-            onSubmit={handleTokenCreation}
-            disabled={currentStep > Steps.WAITING}
-            initialOwner={defaultAccount}
-            web3={web3}
-          />
+          <Web3Context.Provider value={web3}>
+            <TokenForm
+              key="form"
+              onSubmit={handleTokenCreation}
+              disabled={currentStep > Steps.WAITING}
+              initialOwner={defaultAccount}
+            />
+          </Web3Context.Provider>
         ) : (
           <StartButton key="begin" onClick={initializeWeb3}>
             Begin!

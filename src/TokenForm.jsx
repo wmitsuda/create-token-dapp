@@ -2,6 +2,7 @@ import React from "react";
 import { Formik, Form, Field } from "formik";
 import styled from "styled-components";
 import QrReader from "react-qr-reader";
+import { useWeb3 } from "./Web3Context";
 import { useToggle } from "./hooks";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -79,8 +80,9 @@ const TokenField = ({
   </div>
 );
 
-const TokenForm = ({ onSubmit, disabled, initialOwner, web3 }) => {
+const TokenForm = ({ onSubmit, disabled, initialOwner }) => {
   const [isScanning, toggleScanning, setScanning] = useToggle(false);
+  const web3 = useWeb3();
 
   const onScan = setFieldValue => result => {
     if (web3.utils.isAddress(result)) {
