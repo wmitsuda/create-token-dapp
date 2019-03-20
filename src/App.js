@@ -22,34 +22,10 @@ const web3Options = {
   transactionConfirmationBlocks: 1
 };
 
-const getEtherscanURL = networkId => {
-  let networkPrefix;
-  if (networkId === 1) {
-    networkPrefix = "";
-  } else if (networkId === 3) {
-    networkPrefix = "ropsten.";
-  } else if (networkId === 4) {
-    networkPrefix = "rinkeby.";
-  } else if (networkId === 42) {
-    networkPrefix = "kovan.";
-  } else {
-    return null;
-  }
-
-  return {
-    getTxURL: transactionHash =>
-      `https://${networkPrefix}etherscan.io/tx/${transactionHash}`,
-    getAddressURL: address =>
-      `https://${networkPrefix}etherscan.io/address/${address}`,
-    getTokenURL: address =>
-      `https://${networkPrefix}etherscan.io/token/${address}`
-  };
-};
-
 const App = () => {
   const [web3, setWeb3] = useState();
   const [defaultAccount, setDefaultAccount] = useState();
-  const [etherscanGetter, setEtherscanGetter] = useState();
+  const [networkId, setNetworkId] = useState();
   const [currentStep, setCurrentStep] = useState(Steps.WAITING);
   const [cancelled, setCancelled] = useState(false);
   const [data, setData] = useState();
@@ -67,8 +43,7 @@ const App = () => {
     }
 
     const _web3 = new Web3(Web3.givenProvider, null, web3Options);
-    const networkId = await _web3.eth.net.getId();
-    setEtherscanGetter(getEtherscanURL(networkId));
+    setNetworkId(await _web3.eth.net.getId());
     setWeb3(_web3);
   };
 
@@ -152,7 +127,7 @@ const App = () => {
                 currentStep={currentStep}
                 cancelled={cancelled}
                 transactionHash={transactionHash}
-                etherscanGetter={etherscanGetter}
+                networkId={networkId}
                 contractAddress={contract && contract.options.address}
                 ownerAddress={data && data.ownerAddress}
               />
