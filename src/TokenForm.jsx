@@ -82,7 +82,7 @@ const TokenField = ({
 
 const TokenForm = ({ onSubmit, disabled, initialOwner }) => {
   const [isScanning, toggleScanning, setScanning] = useToggle(false);
-  const web3 = useWeb3();
+  const { web3, provider } = useWeb3();
 
   const onScan = setFieldValue => result => {
     if (web3.utils.isAddress(result)) {
@@ -101,7 +101,7 @@ const TokenForm = ({ onSubmit, disabled, initialOwner }) => {
     setSubmitting(false);
   };
 
-  const handleValidation = values => {
+  const handleValidation = async values => {
     let errors = {};
 
     if (!values.tokenName || values.tokenName.trim() === "") {
@@ -133,10 +133,21 @@ const TokenForm = ({ onSubmit, disabled, initialOwner }) => {
     if (!values.initialOwner) {
       errors.initialOwner = "Initial owner is required";
     } else if (!web3.utils.isAddress(values.initialOwner)) {
-      errors.initialOwner = "Enter a valid ETH address";
+      try {
+        const address = await provider.resolveName(values.initialOwner);
+        if (!address) {
+          errors.initialOwner = "Enter a valid ETH address or ENS name";
+        }
+      } catch (err) {
+        // Couldn't resolve ENS name
+        errors.initialOwner = "Enter a valid ETH address or ENS name";
+        console.log(err);
+      }
     }
 
-    return errors;
+    if (Object.keys(errors).length > 0) {
+      throw errors;
+    }
   };
 
   return (
@@ -149,6 +160,7 @@ const TokenForm = ({ onSubmit, disabled, initialOwner }) => {
           initialOwner
         }}
         validate={handleValidation}
+        validateOnChange={false}
         onSubmit={handleSubmitFormik}
         render={({ values, errors, touched, setFieldValue }) => (
           <Form className="needs-validation" noValidate>
@@ -192,7 +204,7 @@ const TokenForm = ({ onSubmit, disabled, initialOwner }) => {
               fieldName="initialOwner"
               label="Initial owner"
               placeholder="Enter the owner address"
-              helpText="A valid ethereum address starting with 0x..."
+              helpText="Ethereum address or ENS name"
               maxLength={42}
               disabled={disabled}
               optionalButton={

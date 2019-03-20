@@ -12,6 +12,7 @@ import TokenForm from "./TokenForm";
 import StatusBox, { Steps } from "./StatusBox";
 import Footer from "./Footer";
 import styled from "styled-components";
+import { ethers } from "ethers";
 
 const StartButton = styled.button`
   background-image: linear-gradient(to bottom right, green, yellow);
@@ -24,6 +25,7 @@ const web3Options = {
 
 const App = () => {
   const [web3, setWeb3] = useState();
+  const [provider, setProvider] = useState();
   const [defaultAccount, setDefaultAccount] = useState();
   const [networkId, setNetworkId] = useState();
   const [currentStep, setCurrentStep] = useState(Steps.WAITING);
@@ -44,18 +46,26 @@ const App = () => {
 
     const _web3 = new Web3(Web3.givenProvider, null, web3Options);
     setNetworkId(await _web3.eth.net.getId());
+    const _provider = new ethers.providers.Web3Provider(Web3.givenProvider);
     setWeb3(_web3);
+    setProvider(_provider);
   };
 
   const handleTokenCreation = async values => {
     setCurrentStep(Steps.DEPLOYING);
+
+    // Initial owner may be a raw ethereum address or ENS name
+    let initialOwner = values.initialOwner;
+    if (!web3.utils.isAddress(initialOwner)) {
+      initialOwner = await provider.resolveName(initialOwner);
+    }
 
     const _data = {
       name: values.tokenName.trim(),
       symbol: values.tokenSymbol.trim(),
       decimals: 18,
       initialSupply: values.initialAmount.toString() + "0".repeat(18),
-      ownerAddress: values.initialOwner
+      ownerAddress: initialOwner
     };
     setData(_data);
 
@@ -110,7 +120,7 @@ const App = () => {
         <YadaBlock key="yada" />
         <Instructions key="info" />
         {web3 ? (
-          <Web3Context.Provider value={web3}>
+          <Web3Context.Provider value={{ web3, provider }}>
             <TokenForm
               key="form"
               onSubmit={handleTokenCreation}
