@@ -101,7 +101,7 @@ const TokenForm = ({ onSubmit, disabled, initialOwner }) => {
     setSubmitting(false);
   };
 
-  const handleValidation = values => {
+  const handleValidation = async values => {
     let errors = {};
 
     if (!values.tokenName || values.tokenName.trim() === "") {
@@ -133,10 +133,20 @@ const TokenForm = ({ onSubmit, disabled, initialOwner }) => {
     if (!values.initialOwner) {
       errors.initialOwner = "Initial owner is required";
     } else if (!web3.utils.isAddress(values.initialOwner)) {
-      errors.initialOwner = "Enter a valid ETH address";
+      try {
+        console.log(values.initialOwner);
+        const address = await web3.eth.ens.getAddress(values.initialOwner);
+        console.log(address);
+      } catch (err) {
+        // Couldn't resolve ENS name
+        errors.initialOwner = "Enter a valid ETH address or ENS name";
+        console.log(err);
+      }
     }
 
-    return errors;
+    if (Object.keys(errors).length > 0) {
+      throw errors;
+    }
   };
 
   return (
@@ -192,7 +202,7 @@ const TokenForm = ({ onSubmit, disabled, initialOwner }) => {
               fieldName="initialOwner"
               label="Initial owner"
               placeholder="Enter the owner address"
-              helpText="A valid ethereum address starting with 0x..."
+              helpText="Ethereum address or ENS name"
               maxLength={42}
               disabled={disabled}
               optionalButton={
