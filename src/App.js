@@ -87,7 +87,10 @@ const App = () => {
     } catch (err) {
       // User didn't approve contract creation
       setCancelled(true);
-      console.log("User has cancelled token creation");
+      console.log(
+        "User has cancelled token creation or some unknown error happened..."
+      );
+      console.log(err);
     }
   };
 
